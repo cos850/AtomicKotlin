@@ -2,7 +2,7 @@ package atomictest
 
 import kotlin.math.abs
 
-const val ERROR_TAG = "[Error]: "
+const val ERROR_TAG = "[Error]"
 
 private fun <L, R> test(
     actual: L,
@@ -13,8 +13,8 @@ private fun <L, R> test(
     println(actual)
     if(!predicate())
     {
-        println(ERROR_TAG)
-        println("$actual " + (if(checkEquals) "!=" else "==") + " $expected")
+        // 코틀린의 if 문은 직접 값을 반환하므로 삼항연산자를 제공하지 않는다.
+        println("$ERROR_TAG: $actual ${if(checkEquals) "!=" else "=="}  $expected")
     }
 }
 
