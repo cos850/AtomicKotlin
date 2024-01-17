@@ -1,6 +1,7 @@
 package atomictest
 
 import kotlin.math.abs
+import kotlin.reflect.KClass
 
 const val ERROR_TAG = "[Error]"
 
@@ -39,3 +40,23 @@ infix fun Double.eq(rval: Double) {
         abs(this - rval) < 0.00000001
     }
 }
+
+
+/**
+ * 예외 정보를 저장하는 클래스
+ */
+class CapturedException(
+    private val exceptionClass: KClass<*>
+) {
+    infix fun eq(inputClass: KClass<*>){
+        exceptionClass eq inputClass
+    }
+}
+
+fun capture(f: ()-> Unit): CapturedException =
+    try{
+        f()
+        CapturedException(Unit::class)
+    } catch(e: Throwable) {
+        CapturedException(e::class)
+    }
